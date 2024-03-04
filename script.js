@@ -10,6 +10,7 @@ const musicaFocoInput = document.querySelector('#alternar-musica');
 const iniciarOuPausarBtn = document.querySelector('#start-pause span');
 const iniciarOuPausarImg = document.querySelector('#start-pause img');
 const tempoNaTela  = document.querySelector('.app__card-timer');
+
 const musica = new Audio('./sons/luna-rise-part-one.mp3');
 musica.loop = true;
 
