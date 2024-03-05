@@ -1,17 +1,19 @@
-const html = document.querySelector('html');
-const focoBtn = document.querySelector('.app__card-button--foco');
-const curtoBtn = document.querySelector('.app__card-button--curto');
-const longoBtn = document.querySelector('.app__card-button--longo');
-const banner = document.querySelector('.app__image');
-const titulo = document.querySelector('.app__title');
-const botoes = document.querySelectorAll(`.app__card-button`);
-const startPauseBtn = document.querySelector(`#start-pause`);
-const musicaFocoInput = document.querySelector('#alternar-musica');
+const html               = document.querySelector('html');
+const focoBtn            = document.querySelector('.app__card-button--foco');
+const curtoBtn           = document.querySelector('.app__card-button--curto');
+const longoBtn           = document.querySelector('.app__card-button--longo');
+const banner             = document.querySelector('.app__image');
+const titulo             = document.querySelector('.app__title');
+const botoes             = document.querySelectorAll(`.app__card-button`);
+const startPauseBtn      = document.querySelector(`#start-pause`);
+const musicaFocoInput    = document.querySelector('#alternar-musica');
 const iniciarOuPausarBtn = document.querySelector('#start-pause span');
 const iniciarOuPausarImg = document.querySelector('#start-pause img');
-const tempoNaTela  = document.querySelector('.app__card-timer');
+const tempoNaTela        = document.querySelector('.app__card-timer');
 
-const musica = new Audio('./sons/luna-rise-part-one.mp3');
+//Música de Foco
+const musica             = new Audio('./sons/luna-rise-part-one.mp3');
+//Ativar loop
 musica.loop = true;
 
 let tempoDecorridoEmSegundos = 1500;
