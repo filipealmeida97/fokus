@@ -5,8 +5,15 @@ const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
 
-//Recuperando a ista de tarefas, fazeno o caminho inverso para converter a string em objeto
+//Recuperando a lista de tarefas, fazendo o caminho inverso para converter a string em objeto
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+function atualizarTarefas() {
+    
+    //inserir item a lista de tarefas
+    localStorage.setItem('tarefas', JSON.stringify(tarefas)); //setItem(<referência>, <lista>)
+
+}
 
 function criarElementoTarefa(tarefa){
     const li = document.createElement('li');
@@ -27,6 +34,14 @@ function criarElementoTarefa(tarefa){
     const botao = document.createElement('button');
     const imagemBotao  = document.createElement('img');
     botao.classList.add('app_button-edit');
+
+    botao.onclick = () => {
+        const novaDescricao = prompt('Qual o novo nome da tarefa?');
+        paragrafo.textContent = novaDescricao;
+        tarefa.descricao = novaDescricao;
+        atualizarTarefas();
+    }
+
     imagemBotao.setAttribute('src', './imagens/edit.png');
     botao.append(imagemBotao);
     
@@ -47,14 +62,20 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
         descricao: textArea.value
     };
     tarefas.push(tarefa);
+
     const elementoTarefa = criarElementoTarefa(tarefa);
+    //Incluir nova tarefa no elemento DOM
     ulTarefas.append(elementoTarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas)); //setItem(<referência>, <lista>)
+    //Limpar textarea
     textArea.value = '';
+    //Esconder formulário
     formAdicionarTarefa.classList.add('hidden');
 });
 
+//Aplica os dados da listagem no documento DOM
 tarefas.forEach(tarefa => {
+    //Chama a função que criar o Elemento(item da listagem)
     const elementoTarefa = criarElementoTarefa(tarefa);
+    //Adiciona o elemento item a lsitagem geral
     ulTarefas.append(elementoTarefa);
 });
