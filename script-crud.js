@@ -1,13 +1,14 @@
 // Encontrar o botão adicionar tarefa
-
 const btnAdicionarTarefa = document.querySelector('.app__button--add-task');
 const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
+const btnCancelarFormulario = document.querySelector('.app__form-footer__button--cancel');
 
 //Recuperando a lista de tarefas, fazendo o caminho inverso para converter a string em objeto
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
+//Função para atualizar a lista de tarefas
 function atualizarTarefas() {
     
     //inserir item a lista de tarefas
@@ -15,6 +16,7 @@ function atualizarTarefas() {
 
 }
 
+//Função para criar o elemento na lista de tarefa
 function criarElementoTarefa(tarefa){
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');
@@ -37,9 +39,11 @@ function criarElementoTarefa(tarefa){
 
     botao.onclick = () => {
         const novaDescricao = prompt('Qual o novo nome da tarefa?');
-        paragrafo.textContent = novaDescricao;
-        tarefa.descricao = novaDescricao;
-        atualizarTarefas();
+        if (novaDescricao) {            
+            paragrafo.textContent = novaDescricao;
+            tarefa.descricao = novaDescricao;
+            atualizarTarefas();
+        }
     }
 
     imagemBotao.setAttribute('src', './imagens/edit.png');
@@ -52,10 +56,18 @@ function criarElementoTarefa(tarefa){
     return li;
 }
 
+//Evento quando o botão 'Adicionar tarefa' for clicado
 btnAdicionarTarefa.addEventListener('click', () => {
     formAdicionarTarefa.classList.toggle('hidden');
 });
 
+//Evento quando o botão 'Cancelar' for clicado
+btnCancelarFormulario.addEventListener('click', () => {
+    textArea.value = '';
+    formAdicionarTarefa.classList.add('hidden');
+});
+
+//Evento quando o formulário for para envio
 formAdicionarTarefa.addEventListener('submit', (evento) => {
     evento.preventDefault();//Impedir o comportamento padrão
     const tarefa = {
