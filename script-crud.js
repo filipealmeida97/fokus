@@ -3,11 +3,12 @@ const btnAdicionarTarefa = document.querySelector('.app__button--add-task');
 const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
+const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 const btnCancelarFormulario = document.querySelector('.app__form-footer__button--cancel');
 
 //Recuperando a lista de tarefas, fazendo o caminho inverso para converter a string em objeto
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-
+let tarefaSelecionada = null;
 //Função para atualizar a lista de tarefas
 function atualizarTarefas() {
     
@@ -53,6 +54,21 @@ function criarElementoTarefa(tarefa){
     li.append(paragrafo);
     li.append(botao);
 
+    li.onclick = () => {
+        document.querySelectorAll('.app__section-task-list-item-active').forEach(elemento => {
+            elemento.classList.remove('app__section-task-list-item-active');
+        });
+        if(tarefaSelecionada == tarefa){
+            paragrafoDescricaoTarefa.textContent = '';
+            tarefaSelecionada = null;
+            return;
+        }
+        tarefaSelecionada = tarefa;
+        paragrafoDescricaoTarefa.textContent = tarefa.descricao;
+        li.classList.toggle('app__section-task-list-item-active');
+
+    }
+
     return li;
 }
 
@@ -80,6 +96,8 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     ulTarefas.append(elementoTarefa);
     //Limpar textarea
     textArea.value = '';
+    //inserir item a lista de tarefas
+    localStorage.setItem('tarefas', JSON.stringify(tarefas)); //setItem(<referência>, <lista>)
     //Esconder formulário
     formAdicionarTarefa.classList.add('hidden');
 });
