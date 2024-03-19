@@ -16,7 +16,7 @@ const musica             = new Audio('./sons/luna-rise-part-one.mp3');
 //Ativar loop
 musica.loop = true;
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 10;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener(`change`, function () {
@@ -58,7 +58,7 @@ function alterarContexto(contexto){
 }
 
 focoBtn.addEventListener('click', () => {
-    tempoDecorridoEmSegundos=1500;
+    tempoDecorridoEmSegundos=10;
     alterarContexto('foco');
 });
 curtoBtn.addEventListener('click', () => {
@@ -73,6 +73,12 @@ longoBtn.addEventListener('click', () => {
 const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos<=0){
         executaSom('./sons/beep.mp3');
+        alert('Tempo Finalizado!');
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo){
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         zerar();
         return;
     }    

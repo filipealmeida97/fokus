@@ -8,7 +8,9 @@ const btnCancelarFormulario = document.querySelector('.app__form-footer__button-
 
 //Recuperando a lista de tarefas, fazendo o caminho inverso para converter a string em objeto
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
 let tarefaSelecionada = null;
+let liTarefaSelecionada = null;
 //Função para atualizar a lista de tarefas
 function atualizarTarefas() {
     
@@ -61,9 +63,11 @@ function criarElementoTarefa(tarefa){
         if(tarefaSelecionada == tarefa){
             paragrafoDescricaoTarefa.textContent = '';
             tarefaSelecionada = null;
+            liTarefaSelecionada = null;
             return;
         }
         tarefaSelecionada = tarefa;
+        liTarefaSelecionada = li;
         paragrafoDescricaoTarefa.textContent = tarefa.descricao;
         li.classList.toggle('app__section-task-list-item-active');
 
@@ -108,4 +112,13 @@ tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa);
     //Adiciona o elemento item a lsitagem geral
     ulTarefas.append(elementoTarefa);
+});
+
+//Ouvinte do evento customizável criado no sript.js
+document.addEventListener('FocoFinalizado', () => {
+    if(tarefaSelecionada && liTarefaSelecionada){
+        liTarefaSelecionada.classList.remove('app__section-task-list-item-active');
+        liTarefaSelecionada.classList.add('app__section-task-list-item-complete');
+        liTarefaSelecionada.querySelector('.app_button-edit').setAttribute('disabled','disabled');
+    }
 });
