@@ -13,7 +13,7 @@ let tarefaSelecionada = null;
 let liTarefaSelecionada = null;
 //Função para atualizar a lista de tarefas
 function atualizarTarefas() {
-    
+    console.log(tarefas);
     //inserir item a lista de tarefas
     localStorage.setItem('tarefas', JSON.stringify(tarefas)); //setItem(<referência>, <lista>)
 
@@ -56,21 +56,27 @@ function criarElementoTarefa(tarefa){
     li.append(paragrafo);
     li.append(botao);
 
-    li.onclick = () => {
-        document.querySelectorAll('.app__section-task-list-item-active').forEach(elemento => {
-            elemento.classList.remove('app__section-task-list-item-active');
-        });
-        if(tarefaSelecionada == tarefa){
-            paragrafoDescricaoTarefa.textContent = '';
-            tarefaSelecionada = null;
-            liTarefaSelecionada = null;
-            return;
-        }
-        tarefaSelecionada = tarefa;
-        liTarefaSelecionada = li;
-        paragrafoDescricaoTarefa.textContent = tarefa.descricao;
-        li.classList.toggle('app__section-task-list-item-active');
+    if (tarefa.completa){
+        
+        li.classList.add('app__section-task-list-item-complete');
+        botao.setAttribute('disabled','disabled');
+    }else{
+        li.onclick = () => {
+            document.querySelectorAll('.app__section-task-list-item-active').forEach(elemento => {
+                elemento.classList.remove('app__section-task-list-item-active');
+            });
+            if(tarefaSelecionada == tarefa){
+                paragrafoDescricaoTarefa.textContent = '';
+                tarefaSelecionada = null;
+                liTarefaSelecionada = null;
+                return;
+            }
+            tarefaSelecionada = tarefa;
+            liTarefaSelecionada = li;
+            paragrafoDescricaoTarefa.textContent = tarefa.descricao;
+            li.classList.toggle('app__section-task-list-item-active');
 
+        }
     }
 
     return li;
@@ -120,5 +126,7 @@ document.addEventListener('FocoFinalizado', () => {
         liTarefaSelecionada.classList.remove('app__section-task-list-item-active');
         liTarefaSelecionada.classList.add('app__section-task-list-item-complete');
         liTarefaSelecionada.querySelector('.app_button-edit').setAttribute('disabled','disabled');
+        tarefaSelecionada.completa = true;
+        atualizarTarefas();
     }
 });
