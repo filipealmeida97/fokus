@@ -5,9 +5,11 @@ const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
 const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 const btnCancelarFormulario = document.querySelector('.app__form-footer__button--cancel');
+const btnRemoverConcluídas = document.querySelector('#btn-remover-concluidas');
+const btnRemoverTodas = document.querySelector('#btn-remover-todas');
 
 //Recuperando a lista de tarefas, fazendo o caminho inverso para converter a string em objeto
-const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
 let tarefaSelecionada = null;
 let liTarefaSelecionada = null;
@@ -120,13 +122,29 @@ tarefas.forEach(tarefa => {
     ulTarefas.append(elementoTarefa);
 });
 
-//Ouvinte do evento customizável criado no sript.js
+//Ouvinte do evento customizável criado no sript.js quando tempo foco terminar
 document.addEventListener('FocoFinalizado', () => {
     if(tarefaSelecionada && liTarefaSelecionada){
         liTarefaSelecionada.classList.remove('app__section-task-list-item-active');
         liTarefaSelecionada.classList.add('app__section-task-list-item-complete');
+        paragrafoDescricaoTarefa.textContent = '';
         liTarefaSelecionada.querySelector('.app_button-edit').setAttribute('disabled','disabled');
         tarefaSelecionada.completa = true;
         atualizarTarefas();
     }
 });
+
+//Remover tarefas concluídas quando o botão remover for clicado
+const removerTarefas = (somenteCompletas) => {
+    const seletor = somenteCompletas ? '.app__section-task-list-item-complete' : ".app__section-task-list-item";
+    paragrafoDescricaoTarefa.textContent = '';
+    document.querySelectorAll(seletor).forEach(elemento => {
+        elemento.remove();
+    });
+    tarefas = somenteCompletas ?  tarefas.filter(tarefa => !tarefa.completa ) : [];
+    atualizarTarefas();
+}
+
+btnRemoverConcluídas.onclick = () => removerTarefas(true);
+btnRemoverTodas.onclick = () => removerTarefas(false);
+
