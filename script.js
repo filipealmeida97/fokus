@@ -16,7 +16,7 @@ const musica             = new Audio('./sons/luna-rise-part-one.mp3');
 //Ativar loop
 musica.loop = true;
 
-let tempoDecorridoEmSegundos = 10;
+let tempoDecorridoEmSegundos = 600;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener(`change`, function () {
@@ -58,7 +58,7 @@ function alterarContexto(contexto){
 }
 
 focoBtn.addEventListener('click', () => {
-    tempoDecorridoEmSegundos=10;
+    tempoDecorridoEmSegundos=600;
     alterarContexto('foco');
 });
 curtoBtn.addEventListener('click', () => {
